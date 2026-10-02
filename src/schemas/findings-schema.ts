@@ -18,10 +18,16 @@ export const findingsSchema: CollectionSchema = {
     {
       name: 'status',
       storage: 'text',
-      interpretation: { kind: 'select', options: ['draft', 'accepted', 'dismissed'] },
+      interpretation: { kind: 'select', options: ['draft', 'investigating', 'accepted', 'dismissed'] },
       required: true,
     },
     { name: 'indicator', storage: 'text', interpretation: 'plain', required: true },
+    { name: 'hypothesis', storage: 'text', interpretation: 'plain' },
+    { name: 'confidence', storage: 'number', interpretation: 'plain' },
+    { name: 'factors', storage: 'text', interpretation: { kind: 'json' } },
+    { name: 'decidedBy', storage: 'text', interpretation: 'plain' },
+    { name: 'decidedAt', storage: 'text', interpretation: 'plain' },
+    { name: 'decisionNote', storage: 'text', interpretation: 'plain' },
   ],
   permissions: {
     viewer: readOnly,

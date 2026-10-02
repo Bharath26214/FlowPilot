@@ -13,6 +13,9 @@ import { casesSchema } from './schemas/cases-schema'
 import { evidenceSchema } from './schemas/evidence-schema'
 import { findingsSchema } from './schemas/findings-schema'
 import { reportsSchema } from './schemas/reports-schema'
+import { briefsSchema } from './schemas/briefs-schema'
+import { reviewsSchema } from './schemas/reviews-schema'
+import { intelSchema } from './schemas/intel-schema'
 
 export const schemas: CollectionSchema[] = [
   usersSchema,
@@ -20,4 +23,7 @@ export const schemas: CollectionSchema[] = [
   evidenceSchema,
   findingsSchema,
   reportsSchema,
+  briefsSchema,
+  reviewsSchema,
+  intelSchema,
 ]

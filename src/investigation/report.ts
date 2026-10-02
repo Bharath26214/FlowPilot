@@ -38,16 +38,26 @@ export function buildReport(input: {
     lines.push('None. Unconfirmed drafts are omitted from this report.')
   } else {
     for (const finding of accepted) {
-      lines.push(`### ${finding.title}`, '', finding.detail, '', `Severity: ${finding.severity}`, `Indicator: ${finding.indicator}`, '')
+      lines.push(`### ${finding.hypothesis ?? finding.title}`, '', finding.detail, '', `Severity: ${finding.severity}`)
+      if (finding.confidence !== undefined) lines.push(`Confidence: ${finding.confidence}% (computed from the evidence checklist below)`)
+      lines.push(`Indicator: ${finding.indicator}`)
+      if (finding.decidedAt) lines.push(`Confirmed by investigator: ${finding.decidedAt}`)
+      if (finding.decisionNote) lines.push(`Investigator note: ${finding.decisionNote}`)
+      const factors = finding.factors ?? []
+      if (factors.length > 0) {
+        lines.push('', 'Evidence checklist:')
+        for (const factor of factors) lines.push(`- [${factor.present ? 'x' : ' '}] ${factor.label}${factor.present ? ` (+${factor.weight})` : ''}`)
+      }
+      lines.push('')
     }
   }
 
-  lines.push('## Dismissed', '')
+  lines.push('## Rejected by investigator', '')
   if (dismissed.length === 0) {
     lines.push('None.')
   } else {
     for (const finding of dismissed) {
-      lines.push(`- ${finding.title} (${finding.indicator})`)
+      lines.push(`- ${finding.hypothesis ?? finding.title} (${finding.indicator})${finding.decisionNote ? ` — ${finding.decisionNote}` : ''}`)
     }
   }
 

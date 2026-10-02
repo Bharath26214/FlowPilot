@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useQuery } from 'deepspace'
+import { useQuery, useUser } from 'deepspace'
 import { Button, Input, Textarea, useToast } from '@/components/ui'
 import { callAction } from '../../../investigation/client'
 import type { CaseData } from '../../../investigation/types'
@@ -17,7 +17,9 @@ const STAGE_LABEL: Record<CaseData['stage'], string> = {
 export default function CasesPage() {
   const { records, status } = useQuery<CaseData>('cases', { orderBy: 'createdAt', orderDir: 'desc', limit: 100 })
   const navigate = useNavigate()
-  const { error } = useToast()
+  const { error, success } = useToast()
+  const { user } = useUser()
+  const [seeding, setSeeding] = useState(false)
   const [title, setTitle] = useState('')
   const [summary, setSummary] = useState('')
   const [creating, setCreating] = useState(false)
@@ -37,11 +39,30 @@ export default function CasesPage() {
     }
   }
 
+  async function onSeed() {
+    setSeeding(true)
+    try {
+      const result = await callAction<{ cases: number; evidence: number }>('seedDemoCases', {})
+      success('Demo cases loaded', `${result.cases} cases with ${result.evidence} evidence files.`)
+    } catch (err) {
+      error('Could not load demo cases', err instanceof Error ? err.message : 'Try again.')
+    } finally {
+      setSeeding(false)
+    }
+  }
+
   return (
     <div className="mx-auto flex w-full max-w-5xl flex-col gap-10 px-6 py-10">
       <header className="flex flex-col gap-2">
         <p className="text-xs uppercase tracking-[0.18em] text-muted-foreground">Investigation</p>
-        <h1 className="text-3xl font-semibold tracking-tight">Cases</h1>
+        <div className="flex items-center justify-between gap-4">
+          <h1 className="text-3xl font-semibold tracking-tight">Cases</h1>
+          {user?.role === 'admin' && (
+            <Button variant="outline" size="sm" loading={seeding} onClick={onSeed}>
+              Load demo cases
+            </Button>
+          )}
+        </div>
         <p className="max-w-xl text-sm text-muted-foreground">
           Open a case, attach a sign-in or audit log, and confirm findings before anything is exported.
         </p>

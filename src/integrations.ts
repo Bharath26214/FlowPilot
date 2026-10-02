@@ -17,5 +17,8 @@
 
 export const integrations: Record<string, { billing: 'developer' | 'user' }> = {
   google: { billing: 'user' },
+  // Threat-intel lookups and PDF export are app features the owner pays for.
+  exa: { billing: 'developer' },
+  cloudconvert: { billing: 'developer' },
   // openai: { billing: 'developer' },
 }

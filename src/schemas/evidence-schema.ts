@@ -26,6 +26,9 @@ export const evidenceSchema: CollectionSchema = {
     { name: 'eventCount', storage: 'number', interpretation: 'plain' },
     { name: 'signals', storage: 'text', interpretation: { kind: 'json' } },
     { name: 'content', storage: 'text', interpretation: 'plain' },
+    { name: 'analysisWarnings', storage: 'text', interpretation: { kind: 'json' } },
+    { name: 'analysisErrorLine', storage: 'number', interpretation: 'plain' },
+    { name: 'analysisStartedAt', storage: 'text', interpretation: 'plain' },
   ],
   permissions: {
     viewer: readOnly,

@@ -8,6 +8,8 @@ export const reportsSchema: CollectionSchema = {
     { name: 'caseId', storage: 'text', interpretation: 'plain', required: true },
     { name: 'body', storage: 'text', interpretation: 'plain', required: true },
     { name: 'exportedAt', storage: 'text', interpretation: 'plain', required: true },
+    { name: 'pdfUrl', storage: 'text', interpretation: 'plain' },
+    { name: 'pdfExpiresAt', storage: 'text', interpretation: 'plain' },
   ],
   permissions: {
     viewer: readOnly,
